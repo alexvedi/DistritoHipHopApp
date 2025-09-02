@@ -156,38 +156,103 @@
     </script>
 
 
+
+
     <script>
-      // Configuración de galerías (igual que ya tenías)
+      /* --- Configuración de galerías: IDs de a-plane → lista de imágenes en a-assets --- */
       const galleries = {
         pdfPlane1: ["#t1p1", "#t1p2", "#t1p3"],
         pdfPlane2: ["#t2p1", "#t2p2", "#t2p3"]
       };
-
       const currentPages = { pdfPlane1: 0, pdfPlane2: 0 };
 
-      Object.keys(galleries).forEach((planeId) => {
-        const plane = document.getElementById(planeId);
-        const marker = plane.closest('[mindar-image-target]'); // padre <a-entity> del plano
+      /* --- Utilidades para detectar si el marcador está visible --- */
+      function isMarkerVisible(el) {
+        const marker = el.closest('[mindar-image-target]');
+        return !!(marker && marker.object3D && marker.object3D.visible);
+      }
 
-        // Depuración útil: ver si hay intersecciones
-        plane.addEventListener('mouseenter', () => console.log(`${planeId} hover`));
-        plane.addEventListener('mouseleave', () => console.log(`${planeId} out`));
+      /* --- Setup: Raycaster + vectores de THREE --- */
+      const sceneEl = document.querySelector('a-scene');
+      const THREE = AFRAME.THREE;
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
 
-        plane.addEventListener('click', () => {
-          // Solo permitir el cambio si el marcador está realmente visible
-          if (!marker || !marker.object3D || !marker.object3D.visible) return;
+      /* Recolecta los meshes asociados a los planos ".clickable" y guarda referencia al elemento */
+      let planeEls = Array.from(document.querySelectorAll('.clickable'));
+      let clickableMeshes = [];
 
-          const imgs = galleries[planeId];
-          const next = (currentPages[planeId] + 1) % imgs.length;
-
-          // Cambiar la textura correctamente → material.src
-          plane.setAttribute('material', 'src', imgs[next]);
-
-          currentPages[planeId] = next;
-          console.log(`📄 ${planeId} → Página ${next + 1}`);
+      /* Reconstruye la lista de meshes (hay que hacerlo cuando la escena / assets están listos) */
+      function buildClickableMeshes() {
+        clickableMeshes = [];
+        planeEls.forEach(el => {
+          el.object3D.traverse(node => {
+            if (node.isMesh) {
+              // enlazamos el mesh al elemento A-Frame para recuperarlo después
+              node._aframeEl = el;
+              clickableMeshes.push(node);
+            }
+          });
         });
+        console.log('✅ Clickable meshes:', clickableMeshes.length);
+      }
+
+      /* Espera a que la escena cargue (para asegurar camera y object3D) */
+      sceneEl.addEventListener('loaded', () => {
+        planeEls = Array.from(document.querySelectorAll('.clickable'));
+        buildClickableMeshes();
       });
+
+      /* Si añades assets dinámicamente, vuelve a llamar a buildClickableMeshes() */
+
+      /* --- Raycast desde coordenadas de pantalla → devuelve el elemento A-Frame intersectado (o null) --- */
+      function getIntersectedEl(clientX, clientY) {
+        if (!sceneEl.camera) return null;
+        mouse.x = (clientX / window.innerWidth) * 2 - 1;
+        mouse.y = - (clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, sceneEl.camera);
+
+        const intersects = raycaster.intersectObjects(clickableMeshes, true);
+        if (intersects.length === 0) return null;
+
+        // primer intersect
+        const mesh = intersects[0].object;
+        const el = mesh._aframeEl || mesh.el || null;
+        return el;
+      }
+
+      /* --- Avanza la página correspondiente si el marcador está visible --- */
+      function advancePageForEl(el) {
+        if (!el || !el.id) return;
+        const id = el.id;
+        if (!galleries[id]) return;
+        if (!isMarkerVisible(el)) {
+          console.log('✖ Marcador no visible, no se avanza:', id);
+          return;
+        }
+        const next = (currentPages[id] + 1) % galleries[id].length;
+        // usar material.src para forzar actualización de textura
+        el.setAttribute('material', 'src', galleries[id][next]);
+        currentPages[id] = next;
+        console.log(`📄 ${id} → página ${next + 1}`);
+      }
+
+      /* --- Handler unificado para touch/mouse/pointer --- */
+      function pointerDownHandler(evt) {
+        const x = evt.touches ? evt.touches[0].clientX : evt.clientX;
+        const y = evt.touches ? evt.touches[0].clientY : evt.clientY;
+        const el = getIntersectedEl(x, y);
+        if (el) advancePageForEl(el);
+      }
+
+      /* Registra listeners (touch y mouse) */
+      window.addEventListener('touchstart', pointerDownHandler, { passive: true });
+      window.addEventListener('mousedown', pointerDownHandler);
+
+      /* Debug: puedes descomentar para forzar rebuild manual en consola */
+      window.__rebuildClickableMeshes = buildClickableMeshes;
     </script>
+
 
   </body>
 </html>
