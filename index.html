@@ -41,14 +41,14 @@
     >
       <!-- Cargar assets (videos) -->
       <a-assets>
-        <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
       </a-assets>
 
       <!-- Cámara AR -->
@@ -56,35 +56,35 @@
 
       <!-- Configuración de múltiples marcadores -->
       <a-entity mindar-image-target="targetIndex: 0" id="marker1">
-        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="1.45"></a-video>
+        <a-plane id="videoElement1" src="#video1" position="0 0 0" width="1" height="1.45"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="marker2">
-        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.65"></a-video>
+        <a-plane id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.65"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 2" id="marker3">
-        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-video>
+        <a-plane id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 6" id="marker7">
-        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-video>
+        <a-plane id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 9" id="marker10">
-        <a-video id="videoElement10" src="#video10" position="0 0 0" width="1" height="0.65"></a-video>
+        <a-plane id="videoElement10" src="#video10" position="0 0 0" width="1" height="0.65"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 11" id="marker12">
-        <a-video id="videoElement12" src="#video12" position="0 0 0" width="1" height="1"></a-video>
+        <a-plane id="videoElement12" src="#video12" position="0 0 0" width="1" height="1"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 12" id="marker13">
-        <a-video id="videoElement13" src="#video13" position="0 0 0" width="1" height="1"></a-video>
+        <a-plane id="videoElement13" src="#video13" position="0 0 0" width="1" height="1"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 14" id="marker15">
-        <a-video id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-video>
+        <a-plane id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-plane>
       </a-entity>
     </a-scene>
 
