@@ -64,8 +64,11 @@
       </a-assets>
 
       <!-- Cámara AR -->
-      <a-camera position="0 0 0" look-controls="enabled: false">
-        <a-cursor raycaster="objects: .clickable" fuse="false"></a-cursor>
+      <a-camera
+       position="0 0 0"
+       look-controls="enabled: false"
+       cursor="rayOrigin: mouse"
+       raycaster="objects: .clickable; interval: 100; far: 20">
       </a-camera>
 
       <!-- Configuración de múltiples marcadores -->
@@ -83,12 +86,12 @@
 
       <!-- PDF 1 -->
       <a-entity mindar-image-target="targetIndex: 4" id="pdfMarker1">
-        <a-plane id="pdfPlane1" src="#t1p1" position="0 0 0" width="1" height="1.4" class="clickable"></a-plane>
+        <a-plane id="pdfPlane1" class="clickable" src="#t1p1" position="0 0 0" width="1" height="1.4"></a-plane>
       </a-entity>
 
       <!-- PDF 2 -->
       <a-entity mindar-image-target="targetIndex: 5" id="pdfMarker2">
-        <a-plane id="pdfPlane2" src="#t2p1" position="0 0 0" width="1" height="1.4" class="clickable"></a-plane>
+        <a-plane id="pdfPlane2" class="clickable" src="#t2p1" position="0 0 0" width="1" height="1.4"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 6" id="marker7">
@@ -154,27 +157,34 @@
 
 
     <script>
-      // Configuración de galerías
+      // Configuración de galerías (igual que ya tenías)
       const galleries = {
         pdfPlane1: ["#t1p1", "#t1p2", "#t1p3"],
         pdfPlane2: ["#t2p1", "#t2p2", "#t2p3"]
       };
 
-      // Estado actual de cada galería
-      const currentPages = {
-        pdfPlane1: 0,
-        pdfPlane2: 0
-      };
+      const currentPages = { pdfPlane1: 0, pdfPlane2: 0 };
 
-      // Asignar evento de click dinámicamente
-      Object.keys(galleries).forEach(planeId => {
+      Object.keys(galleries).forEach((planeId) => {
         const plane = document.getElementById(planeId);
-        plane.addEventListener("click", () => {
-          let pageIndex = currentPages[planeId];
-          pageIndex = (pageIndex + 1) % galleries[planeId].length; // avanzar, volver al inicio
-          plane.setAttribute("src", galleries[planeId][pageIndex]);
-          currentPages[planeId] = pageIndex;
-          console.log(`📄 ${planeId} → Página ${pageIndex + 1}`);
+        const marker = plane.closest('[mindar-image-target]'); // padre <a-entity> del plano
+
+        // Depuración útil: ver si hay intersecciones
+        plane.addEventListener('mouseenter', () => console.log(`${planeId} hover`));
+        plane.addEventListener('mouseleave', () => console.log(`${planeId} out`));
+
+        plane.addEventListener('click', () => {
+          // Solo permitir el cambio si el marcador está realmente visible
+          if (!marker || !marker.object3D || !marker.object3D.visible) return;
+
+          const imgs = galleries[planeId];
+          const next = (currentPages[planeId] + 1) % imgs.length;
+
+          // Cambiar la textura correctamente → material.src
+          plane.setAttribute('material', 'src', imgs[next]);
+
+          currentPages[planeId] = next;
+          console.log(`📄 ${planeId} → Página ${next + 1}`);
         });
       });
     </script>
