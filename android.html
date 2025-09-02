@@ -6,14 +6,14 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <meta charset="UTF-8" />
-    <title>MindAR Multi-Target</title>
+    <title>Distrito HipHop</title>
     
     
   </head>
   <body>
     
     <a-scene
-      mindar-image="imageTargetSrc: https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/targets-3.mind?v=1740066881153;
+      mindar-image="imageTargetSrc: Assets/targets-3.mind;
                   filterMinCF: 0.0001;
                   filterBeta: 0.001;"
       color-space="sRGB"
@@ -23,15 +23,14 @@
     >
       <!-- Cargar assets (videos) -->
       <a-assets>
-        <video id="video1" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Artista-de-Tierra-ar.mp4?v=1740025325806" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Corpo-espiritualidades-negras-ar.mp4?v=1740025330397" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/El-pensador-negroafrofuturista01-ar.mp4?v=1740025335047" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video4" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/El-pensador-negroafrofuturista02-ar.mp4?v=1740025339367" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video5" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Ilustracion-Espiritualidades-ar.mp4?v=1740077757430" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video6" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-chango-el-gran-putas-ar.mp4?v=1740025344210" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video7" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-Divinidad-Matriarcal-ar.mp4?v=1740025348798" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video8" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-Visionaria-Espiritual-ar.mp4?v=1740025353396" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video9" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Una-Santa-erotica-ar.mp4?v=1740025358767" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
       </a-assets>
 
       <!-- Cámara AR -->
@@ -39,39 +38,35 @@
 
       <!-- Configuración de múltiples marcadores -->
       <a-entity mindar-image-target="targetIndex: 0" id="marker1">
-        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="0.68"></a-video>
+        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="1.45"></a-video>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 1" id="marker2">
-        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.8"></a-video>
+        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.65"></a-video>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 2" id="marker3">
-        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="1"></a-video>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 3" id="marker4">
-        <a-video id="videoElement4" src="#video4" position="0 0 0" width="1" height="1"></a-video>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 4" id="marker5">
-        <a-video id="videoElement5" src="#video5" position="0 0 0" width="1" height="1.3"></a-video>
-      </a-entity>
-
-      <a-entity mindar-image-target="targetIndex: 5" id="marker6">
-        <a-video id="videoElement6" src="#video6" position="0 0 0" width="1" height="0.68"></a-video>
+        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-video>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 6" id="marker7">
-        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.7"></a-video>
+        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-video>
       </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 7" id="marker8">
-        <a-video id="videoElement8" src="#video8" position="0 0 0" width="1" height="0.7"></a-video>
+      <a-entity mindar-image-target="targetIndex: 9" id="marker10">
+        <a-video id="videoElement10" src="#video10" position="0 0 0" width="1" height="0.65"></a-video>
       </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 8" id="marker9">
-        <a-video id="videoElement9" src="#video9" position="0 0 0" width="1" height="1"></a-video>
+      <a-entity mindar-image-target="targetIndex: 11" id="marker12">
+        <a-video id="videoElement12" src="#video12" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 12" id="marker13">
+        <a-video id="videoElement13" src="#video13" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 14" id="marker15">
+        <a-video id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-video>
       </a-entity>
     </a-scene>
 
@@ -106,12 +101,11 @@
         setupVideoEvents("marker1", "video1");
         setupVideoEvents("marker2", "video2");
         setupVideoEvents("marker3", "video3");
-        setupVideoEvents("marker4", "video4");
-        setupVideoEvents("marker5", "video5");
-        setupVideoEvents("marker6", "video6");
         setupVideoEvents("marker7", "video7");
-        setupVideoEvents("marker8", "video8");
-        setupVideoEvents("marker9", "video9");
+        setupVideoEvents("marker10", "video10");
+        setupVideoEvents("marker12", "video12");
+        setupVideoEvents("marker13", "video13");
+        setupVideoEvents("marker15", "video15");
       });
     </script>
   </body>
