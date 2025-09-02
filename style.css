@@ -30,7 +30,7 @@
   border-radius: 25px;
   cursor: pointer;
   color: #ffffff;
-  margin: 30px;
+  margin: 20px;
 }
 .android {
   font-size: 20px;
@@ -42,7 +42,7 @@
   color: #ffffff;
 }
 p {
-  font-size: 22px;
+  font-size: 18px;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   padding: 0px 30px 0px 30px;
