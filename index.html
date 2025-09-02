@@ -41,6 +41,7 @@
     >
       <!-- Cargar assets (videos) -->
       <a-assets>
+
         <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
@@ -49,6 +50,17 @@
         <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+      
+        <!-- Páginas PDF target 6 -->
+        <img id="t1p1" src="Assets/marker06/marker06-01.jpg">
+        <img id="t1p2" src="Assets/marker06/marker06-02.jpg">
+        <img id="t1p3" src="Assets/marker06/marker06-03.jpg">
+        
+        <!-- Páginas PDF target 2 -->
+        <img id="t2p1" src="Assets/marker06/marker06-01.jpg">
+        <img id="t2p2" src="Assets/marker06/marker06-01.jpg">
+        <img id="t2p3" src="Assets/marker06/marker06-01.jpg">
+      
       </a-assets>
 
       <!-- Cámara AR -->
@@ -65,6 +77,16 @@
 
       <a-entity mindar-image-target="targetIndex: 2" id="marker3">
         <a-plane id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-plane>
+      </a-entity>
+
+      <!-- PDF 1 -->
+      <a-entity mindar-image-target="targetIndex: 4" id="pdfMarker1">
+        <a-plane id="pdfPlane1" src="#t1p1" position="0 0 0" width="1" height="1.4"></a-plane>
+      </a-entity>
+
+      <!-- PDF 2 -->
+      <a-entity mindar-image-target="targetIndex: 5" id="pdfMarker2">
+        <a-plane id="pdfPlane2" src="#t2p1" position="0 0 0" width="1" height="1.4"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 6" id="marker7">
@@ -126,6 +148,33 @@
       setupVideoEvents("marker12", "video12");
       setupVideoEvents("marker13", "video13");
       setupVideoEvents("marker15", "video15");
+    </script>
+
+
+    <script>
+      // Configuración de galerías
+      const galleries = {
+        pdfPlane1: ["#t1p1", "#t1p2", "#t1p3"],
+        pdfPlane2: ["#t2p1", "#t2p2", "#t2p3"]
+      };
+
+      // Estado actual de cada galería
+      const currentPages = {
+        pdfPlane1: 0,
+        pdfPlane2: 0
+      };
+
+      // Asignar evento de click dinámicamente
+      Object.keys(galleries).forEach(planeId => {
+        const plane = document.getElementById(planeId);
+        plane.addEventListener("click", () => {
+          let pageIndex = currentPages[planeId];
+          pageIndex = (pageIndex + 1) % galleries[planeId].length; // avanzar, volver al inicio
+          plane.setAttribute("src", galleries[planeId][pageIndex]);
+          currentPages[planeId] = pageIndex;
+          console.log(`📄 ${planeId} → Página ${pageIndex + 1}`);
+        });
+      });
     </script>
 
   </body>
