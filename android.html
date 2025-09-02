@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <meta charset="UTF-8" />
+    <title>MindAR Multi-Target</title>
+    
+    
+  </head>
+  <body>
+    
+    <a-scene
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/targets-3.mind?v=1740066881153;
+                  filterMinCF: 0.0001;
+                  filterBeta: 0.001;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <!-- Cargar assets (videos) -->
+      <a-assets>
+        <video id="video1" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Artista-de-Tierra-ar.mp4?v=1740025325806" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Corpo-espiritualidades-negras-ar.mp4?v=1740025330397" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/El-pensador-negroafrofuturista01-ar.mp4?v=1740025335047" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video4" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/El-pensador-negroafrofuturista02-ar.mp4?v=1740025339367" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video5" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Ilustracion-Espiritualidades-ar.mp4?v=1740077757430" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video6" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-chango-el-gran-putas-ar.mp4?v=1740025344210" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video7" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-Divinidad-Matriarcal-ar.mp4?v=1740025348798" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video8" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Obra-Visionaria-Espiritual-ar.mp4?v=1740025353396" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video9" src="https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/Una-Santa-erotica-ar.mp4?v=1740025358767" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      </a-assets>
+
+      <!-- Cámara AR -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Configuración de múltiples marcadores -->
+      <a-entity mindar-image-target="targetIndex: 0" id="marker1">
+        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="0.68"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 1" id="marker2">
+        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.8"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 2" id="marker3">
+        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 3" id="marker4">
+        <a-video id="videoElement4" src="#video4" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 4" id="marker5">
+        <a-video id="videoElement5" src="#video5" position="0 0 0" width="1" height="1.3"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 5" id="marker6">
+        <a-video id="videoElement6" src="#video6" position="0 0 0" width="1" height="0.68"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 6" id="marker7">
+        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.7"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 7" id="marker8">
+        <a-video id="videoElement8" src="#video8" position="0 0 0" width="1" height="0.7"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 8" id="marker9">
+        <a-video id="videoElement9" src="#video9" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Asegurar reproducción en iPhone con un toque
+        document.body.addEventListener("touchstart", () => {
+          document.querySelectorAll("video").forEach((video) => {
+            video.muted = true;
+            video.play().catch(() => console.log("⚠️ No se pudo iniciar el video automáticamente."));
+          });
+        });
+
+        // Función para configurar eventos de detección
+        const setupVideoEvents = (markerId, videoId) => {
+          const video = document.getElementById(videoId);
+          const marker = document.getElementById(markerId);
+
+          marker.addEventListener("targetFound", () => {
+            console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
+            video.muted = false; // Habilitar sonido si es necesario
+            video.play().catch((error) => console.log(`⚠️ Error al reproducir ${videoId}:`, error));
+          });
+
+          marker.addEventListener("targetLost", () => {
+            console.log(`🔹 Marcador ${markerId} perdido, pausando ${videoId}...`);
+            video.pause();
+          });
+        };
+
+        // Asignar eventos a cada marcador
+        setupVideoEvents("marker1", "video1");
+        setupVideoEvents("marker2", "video2");
+        setupVideoEvents("marker3", "video3");
+        setupVideoEvents("marker4", "video4");
+        setupVideoEvents("marker5", "video5");
+        setupVideoEvents("marker6", "video6");
+        setupVideoEvents("marker7", "video7");
+        setupVideoEvents("marker8", "video8");
+        setupVideoEvents("marker9", "video9");
+      });
+    </script>
+  </body>
+</html>

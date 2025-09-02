@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <meta charset="UTF-8" />
+    <title>MindAR Multi-Target</title>
+    
+    <link rel="stylesheet" href="style.css">
+    
+  </head>
+  <body>
+    
+    <!-- Pantalla de inicio -->
+    <section id="start-screen">
+      <img src="Assets/logo-expo.webp" alt="">
+      
+      <section id="texto">
+      <p>
+        Al apuntar tu dispositivo móvil a cada obra puedes ver y escuchar información relevante.
+      </p>
+      <p>
+        Solo debes aceptar la solicitud de uso de cámara de tu dispositivo y seleccionar si es iPhone o Android.
+      </p>
+      </section>
+
+      <button id="start-btn">Seguir con iPhone</button>
+      <a href="android.html"><button class="android">Seguir con Android</button></a>
+    </section>
+    
+    <a-scene
+      mindar-image="imageTargetSrc: https://cdn.glitch.global/4bdf9ef5-03cd-4eca-aeb6-38c4298c8aa2/targets-3.mind?v=1740066881153;
+                  filterMinCF: 0.0001;
+                  filterBeta: 0.001;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <!-- Cargar assets (videos) -->
+      <a-assets>
+        <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video2" src="Assets/Marker02-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video3" src="Assets/Marker03-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video10" src="Assets/Marker10-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video12" src="Assets/Marker12-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+        <video id="video13" src="Assets/Marker13-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
+      </a-assets>
+
+      <!-- Cámara AR -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+      <!-- Configuración de múltiples marcadores -->
+      <a-entity mindar-image-target="targetIndex: 0" id="marker1">
+        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="0.68"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 1" id="marker2">
+        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.8"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 2" id="marker3">
+        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 3" id="marker4">
+        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="1"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 4" id="marker5">
+        <a-video id="videoElement10" src="#video10" position="0 0 0" width="1" height="1.3"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 5" id="marker6">
+        <a-video id="videoElement12" src="#video12" position="0 0 0" width="1" height="0.68"></a-video>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 6" id="marker7">
+        <a-video id="videoElement13" src="#video13" position="0 0 0" width="1" height="0.7"></a-video>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      document.getElementById("start-btn").addEventListener("click", () => {
+        // Ocultar la pantalla de inicio
+        document.getElementById("start-screen").style.display = "none";
+
+        // Obtener los videos y forzar la reproducción
+        const videos = document.querySelectorAll("video");
+        videos.forEach(video => {
+          video.muted = false; // Desactivar muteo
+          video.play().catch(error => console.log("⚠️ No se pudo reproducir un video:", error));
+        });
+      });
+
+      // Reproducción basada en detección de marcador
+      const setupVideoEvents = (markerId, videoId) => {
+        const video = document.getElementById(videoId);
+        const marker = document.getElementById(markerId);
+
+        marker.addEventListener("targetFound", () => {
+          console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
+          video.play().catch(error => console.log(`⚠️ Error al reproducir ${videoId}:`, error));
+        });
+
+        marker.addEventListener("targetLost", () => {
+          console.log(`🔹 Marcador ${markerId} perdido, pausando ${videoId}...`);
+          video.pause();
+        });
+      };
+
+      setupVideoEvents("marker1", "video1");
+      setupVideoEvents("marker2", "video2");
+      setupVideoEvents("marker3", "video3");
+      setupVideoEvents("marker7", "video7");
+      setupVideoEvents("marker10", "video10");
+      setupVideoEvents("marker12", "video12");
+      setupVideoEvents("marker13", "video13");
+    </script>
+
+  </body>
+</html>
