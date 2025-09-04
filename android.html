@@ -1,112 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-    <meta charset="UTF-8" />
-    <title>Distrito HipHop</title>
-    
-    
-  </head>
-  <body>
-    
-    <a-scene
-      mindar-image="imageTargetSrc: Assets/targets-3.mind;
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <meta charset="UTF-8" />
+  <title>Distrito HipHop</title>
+
+
+</head>
+
+<body>
+  <!-- Botones para PDFs -->
+  <div id="pdfOverlay1" class="pdf-overlay" data-pdf="Assets/marker04.pdf">
+    <button id="pdfBtn1" class="pdf-btn">Abrir PDF</button>
+  </div>
+
+  <div id="pdfOverlay2" class="pdf-overlay" data-pdf="Assets/marker05.pdf">
+    <button id="pdfBtn2" class="pdf-btn">Abrir PDF</button>
+  </div>
+
+  <div id="pdfOverlay3" class="pdf-overlay" data-pdf="Assets/marker06.pdf">
+    <button id="pdfBtn3" class="pdf-btn">Abrir PDF</button>
+  </div>
+
+
+  <a-scene mindar-image="imageTargetSrc: Assets/targets-3.mind;
                   filterMinCF: 0.0001;
                   filterBeta: 0.001;"
-      color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
-      vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
-      <!-- Cargar assets (videos) -->
-      <a-assets>
-        <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline crossorigin="anonymous"></video>
-      </a-assets>
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
 
-      <!-- Cámara AR -->
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <!-- Cámara AR con cursor y raycaster (usa .clickable) -->
+    <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse"
+      raycaster="objects: .clickable; interval: 100; far: 20"></a-camera>
 
-      <!-- Configuración de múltiples marcadores -->
-      <a-entity mindar-image-target="targetIndex: 0" id="marker1">
-        <a-video id="videoElement1" src="#video1" position="0 0 0" width="1" height="1.45"></a-video>
-      </a-entity>
+    <!-- Cargar assets (videos) -->
+    <a-assets>
+      <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video9" src="Assets/marker09-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+      <video id="video16" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
+    </a-assets>
 
-      <a-entity mindar-image-target="targetIndex: 1" id="marker2">
-        <a-video id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.65"></a-video>
-      </a-entity>
+    <!-- Configuración de múltiples marcadores -->
+    <a-entity mindar-image-target="targetIndex: 0" id="marker1">
+      <a-plane id="videoElement1" src="#video1" position="0 0 0" width="1" height="1.45"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 2" id="marker3">
-        <a-video id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-video>
-      </a-entity>
+    <a-entity mindar-image-target="targetIndex: 1" id="marker2">
+      <a-plane id="videoElement2" src="#video2" position="0 0 0" width="1" height="0.65"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 6" id="marker7">
-        <a-video id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-video>
-      </a-entity>
+    <a-entity mindar-image-target="targetIndex: 2" id="marker3">
+      <a-plane id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 9" id="marker10">
-        <a-video id="videoElement10" src="#video10" position="0 0 0" width="1" height="0.65"></a-video>
-      </a-entity>
+    <a-entity mindar-image-target="targetIndex: 6" id="marker7">
+      <a-plane id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 11" id="marker12">
-        <a-video id="videoElement12" src="#video12" position="0 0 0" width="1" height="1"></a-video>
-      </a-entity>
+    <a-entity mindar-image-target="targetIndex: 8" id="marker9">
+      <a-plane id="videoElement9" src="#video9" position="0 0 0" width="1" height="0.65"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 12" id="marker13">
-        <a-video id="videoElement13" src="#video13" position="0 0 0" width="1" height="1"></a-video>
-      </a-entity>
+    <a-entity mindar-image-target="targetIndex: 9" id="marker10">
+      <a-plane id="videoElement10" src="#video10" position="0 0 0" width="1" height="0.65"></a-plane>
+    </a-entity>
 
-      <a-entity mindar-image-target="targetIndex: 14" id="marker15">
-        <a-video id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-video>
-      </a-entity>
-    </a-scene>
+    <a-entity mindar-image-target="targetIndex: 11" id="marker12">
+      <a-plane id="videoElement12" src="#video12" position="0 0 0" width="1" height="1"></a-plane>
+    </a-entity>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // Asegurar reproducción en iPhone con un toque
-        document.body.addEventListener("touchstart", () => {
-          document.querySelectorAll("video").forEach((video) => {
-            video.muted = true;
-            video.play().catch(() => console.log("⚠️ No se pudo iniciar el video automáticamente."));
+    <a-entity mindar-image-target="targetIndex: 12" id="marker13">
+      <a-plane id="videoElement13" src="#video13" position="0 0 0" width="1" height="1"></a-plane>
+    </a-entity>
+
+    <a-entity mindar-image-target="targetIndex: 14" id="marker15">
+      <a-plane id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-plane>
+    </a-entity>
+
+    <a-entity mindar-image-target="targetIndex: 15" id="marker16">
+      <a-plane id="videoElement16" src="#video16" position="0 0 0" width="1" height="0.75"></a-plane>
+    </a-entity>
+
+
+    <!-- PDFs -->
+    <a-entity mindar-image-target="targetIndex: 3" id="markerPDF1"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 4" id="markerPDF2"></a-entity>
+    <a-entity mindar-image-target="targetIndex: 5" id="markerPDF3"></a-entity>
+
+  </a-scene>
+
+
+  <script>
+    document.getElementById("start-btn").addEventListener("click", () => {
+      // Ocultar la pantalla de inicio
+      document.getElementById("start-screen").style.display = "none";
+
+      // Obtener los videos y forzar la reproducción
+      const videos = document.querySelectorAll("video");
+      videos.forEach(video => {
+        video.muted = false; // Desactivar muteo
+        video.play().catch(error => console.log("⚠️ No se pudo reproducir un video:", error));
+      });
+    });
+
+    // Reproducción basada en detección de marcador
+    const setupVideoEvents = (markerId, videoId) => {
+      const video = document.getElementById(videoId);
+      const marker = document.getElementById(markerId);
+
+      marker.addEventListener("targetFound", () => {
+        console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
+        video.play().catch(error => console.log(`⚠️ Error al reproducir ${videoId}:`, error));
+      });
+
+      marker.addEventListener("targetLost", () => {
+        console.log(`🔹 Marcador ${markerId} perdido, pausando ${videoId}...`);
+        video.pause();
+      });
+    };
+
+    // Asignar eventos a cada marcador
+    setupVideoEvents("marker1", "video1");
+    setupVideoEvents("marker2", "video2");
+    setupVideoEvents("marker3", "video3");
+    setupVideoEvents("marker7", "video7");
+    setupVideoEvents("marker9", "video9");
+    setupVideoEvents("marker10", "video10");
+    setupVideoEvents("marker12", "video12");
+    setupVideoEvents("marker13", "video13");
+    setupVideoEvents("marker15", "video15");
+    setupVideoEvents("marker16", "video16");
+  </script>
+
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // ----- Ajusta aquí si tus overlays o rutas son distintas -----
+      const mappings = [
+        { markerId: 'markerPDF1', overlayId: 'pdfOverlay1', btnId: 'pdfBtn1', pdf: 'Assets/marker04.pdf', name: 'PDF 1' },
+        { markerId: 'markerPDF2', overlayId: 'pdfOverlay2', btnId: 'pdfBtn2', pdf: 'Assets/marker05.pdf', name: 'PDF 2' },
+        { markerId: 'markerPDF3', overlayId: 'pdfOverlay3', btnId: 'pdfBtn3', pdf: 'Assets/marker06.pdf', name: 'PDF 3' }
+      ];
+      // -------------------------------------------------------------
+
+      // Aseguro estado inicial: ocultar overlays desde JS (por si CSS los deja visibles)
+      const overlays = Array.from(document.querySelectorAll('.pdf-overlay'));
+      overlays.forEach(o => { o.style.display = 'none'; });
+
+      // Helper: ocultar todos los overlays (cuando uno se activa)
+      function hideAllOverlays() {
+        overlays.forEach(o => o.style.display = 'none');
+      }
+
+      // Esperar a que la escena esté lista
+      const aScene = document.querySelector('a-scene');
+      const attachHandlers = () => {
+
+        mappings.forEach(m => {
+          const markerEl = document.getElementById(m.markerId);
+          const overlayEl = document.getElementById(m.overlayId);
+          const btnEl = document.getElementById(m.btnId);
+
+          if (!markerEl) {
+            console.warn(`[AR] marker no encontrado: '${m.markerId}'. Revisa el id del <a-entity>.`);
+            return;
+          }
+          if (!overlayEl || !btnEl) {
+            console.warn(`[AR] overlay/button no encontrado para: ${m.name} (overlay:${m.overlayId}, btn:${m.btnId})`);
+            return;
+          }
+
+          // Inicial: oculto
+          overlayEl.style.display = 'none';
+
+          // Handler seguro: llamada al PDF desde un gesto nativo (click / touchend)
+          const openPdf = (ev) => {
+            if (ev && ev.preventDefault) ev.preventDefault();
+            // abre en nueva pestaña - si m.pdf es relativo, asegúrate que existe en Assets/
+            window.open(m.pdf, '_blank', 'noopener');
+          };
+
+          // Evitar registrar múltiples veces
+          btnEl.removeEventListener('click', openPdf);
+          btnEl.addEventListener('click', openPdf);
+          btnEl.removeEventListener('touchend', openPdf);
+          btnEl.addEventListener('touchend', (e) => { e.preventDefault(); openPdf(e); }, { passive: false });
+
+          // Eventos MindAR: mostrar solo el overlay correspondiente
+          markerEl.addEventListener('targetFound', () => {
+            console.log(`[AR] targetFound -> ${m.markerId} (${m.name})`);
+            hideAllOverlays();
+            overlayEl.style.display = 'block';
+          });
+
+          markerEl.addEventListener('targetLost', () => {
+            console.log(`[AR] targetLost -> ${m.markerId} (${m.name})`);
+            overlayEl.style.display = 'none';
           });
         });
 
-        // Función para configurar eventos de detección
-        const setupVideoEvents = (markerId, videoId) => {
-          const video = document.getElementById(videoId);
-          const marker = document.getElementById(markerId);
+        // Debug adicional: loguear todos los a-entity que contienen mindar-image-target
+        document.querySelectorAll('a-entity[mindar-image-target]').forEach(el => {
+          el.addEventListener('targetFound', () => console.log('DEBUG: FOUND', el.id, el.getAttribute('mindar-image-target')));
+          el.addEventListener('targetLost', () => console.log('DEBUG: LOST', el.id));
+        });
+      };
 
-          marker.addEventListener("targetFound", () => {
-            console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
-            video.muted = false; // Habilitar sonido si es necesario
-            video.play().catch((error) => console.log(`⚠️ Error al reproducir ${videoId}:`, error));
-          });
-
-          marker.addEventListener("targetLost", () => {
-            console.log(`🔹 Marcador ${markerId} perdido, pausando ${videoId}...`);
-            video.pause();
-          });
-        };
-
-        // Asignar eventos a cada marcador
-        setupVideoEvents("marker1", "video1");
-        setupVideoEvents("marker2", "video2");
-        setupVideoEvents("marker3", "video3");
-        setupVideoEvents("marker7", "video7");
-        setupVideoEvents("marker10", "video10");
-        setupVideoEvents("marker12", "video12");
-        setupVideoEvents("marker13", "video13");
-        setupVideoEvents("marker15", "video15");
-      });
-    </script>
-  </body>
+      if (aScene) {
+        if (aScene.hasLoaded) attachHandlers();
+        else aScene.addEventListener('loaded', attachHandlers);
+      } else {
+        // fallback
+        setTimeout(attachHandlers, 700);
+      }
+    });
+  </script>
+</body>
 </html>

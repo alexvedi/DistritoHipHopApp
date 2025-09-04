@@ -78,6 +78,8 @@
         crossorigin="anonymous" preload="auto"></video>
       <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay
         crossorigin="anonymous" preload="auto"></video>
+      <video id="video16" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay
+        crossorigin="anonymous" preload="auto"></video>
     </a-assets>
 
     <!-- Configuración de múltiples marcadores -->
@@ -115,6 +117,10 @@
 
     <a-entity mindar-image-target="targetIndex: 14" id="marker15">
       <a-plane id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-plane>
+    </a-entity>
+
+    <a-entity mindar-image-target="targetIndex: 15" id="marker16">
+      <a-plane id="videoElement16" src="#video16" position="0 0 0" width="1" height="0.75"></a-plane>
     </a-entity>
 
 
@@ -165,6 +171,7 @@
     setupVideoEvents("marker12", "video12");
     setupVideoEvents("marker13", "video13");
     setupVideoEvents("marker15", "video15");
+    setupVideoEvents("marker16", "video16");
   </script>
 
 
