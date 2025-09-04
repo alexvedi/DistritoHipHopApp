@@ -46,39 +46,13 @@
         <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video7" src="Assets/marker07-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
+        <video id="video9" src="Assets/marker09-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video10" src="Assets/marker10-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
       
-        <!-- Páginas PDF target 6 -->
-        <img id="t1p1" src="Assets/marker06/marker06-01.jpg">
-        <img id="t1p2" src="Assets/marker06/marker06-02.jpg">
-        <img id="t1p3" src="Assets/marker06/marker06-03.jpg">
         
-        <!-- Páginas PDF DOXA -->
-        <img id="t2p1" src="Assets/marker06/marker06-01.jpg">
-        <img id="t2p2" src="Assets/marker06/marker06-02.jpg">
-        <img id="t2p3" src="Assets/marker06/marker06-03.jpg">
-        <img id="t2p4" src="Assets/marker06/marker06-04.jpg">
-        <img id="t2p5" src="Assets/marker06/marker06-05.jpg">
-        <img id="t2p6" src="Assets/marker06/marker06-06.jpg">
-        <img id="t2p7" src="Assets/marker06/marker06-07.jpg">
-        <img id="t2p8" src="Assets/marker06/marker06-08.jpg">
-        <img id="t2p9" src="Assets/marker06/marker06-09.jpg">
-        <img id="t2p10" src="Assets/marker06/marker06-10.jpg">
-        <img id="t2p11" src="Assets/marker06/marker06-11.jpg">
-        <img id="t2p12" src="Assets/marker06/marker06-12.jpg">
-        <img id="t2p13" src="Assets/marker06/marker06-13.jpg">
-        <img id="t2p14" src="Assets/marker06/marker06-14.jpg">
-        <img id="t2p15" src="Assets/marker06/marker06-15.jpg">
-        <img id="t2p16" src="Assets/marker06/marker06-16.jpg">
-        <img id="t2p17" src="Assets/marker06/marker06-17.jpg">
-        <img id="t2p18" src="Assets/marker06/marker06-18.jpg">
-        <img id="t2p19" src="Assets/marker06/marker06-19.jpg">
-        <img id="t2p20" src="Assets/marker06/marker06-20.jpg">
-        <img id="t2p21" src="Assets/marker06/marker06-21.jpg">
-        <img id="t2p22" src="Assets/marker06/marker06-22.jpg">
       
       </a-assets>
 
@@ -103,18 +77,12 @@
         <a-plane id="videoElement3" src="#video3" position="0 0 0" width="1" height="0.75"></a-plane>
       </a-entity>
 
-      <!-- PDF 1 -->
-      <a-entity mindar-image-target="targetIndex: 4" id="pdfMarker1">
-        <a-plane id="pdfPlane1" class="clickable" src="#t1p1" position="0 0 0" width="1" height="1.4"></a-plane>
-      </a-entity>
-
-      <!-- PDF DOXA -->
-      <a-entity mindar-image-target="targetIndex: 5" id="pdfMarker2">
-        <a-plane id="pdfPlane2" class="clickable" src="#t2p1" position="0 0 0" width="1" height="1.4"></a-plane>
-      </a-entity>
-
       <a-entity mindar-image-target="targetIndex: 6" id="marker7">
         <a-plane id="videoElement7" src="#video7" position="0 0 0" width="1" height="0.9"></a-plane>
+      </a-entity>
+
+      <a-entity mindar-image-target="targetIndex: 8" id="marker9">
+        <a-plane id="videoElement9" src="#video9" position="0 0 0" width="1" height="0.65"></a-plane>
       </a-entity>
 
       <a-entity mindar-image-target="targetIndex: 9" id="marker10">
@@ -132,7 +100,16 @@
       <a-entity mindar-image-target="targetIndex: 14" id="marker15">
         <a-plane id="videoElement15" src="#video15" position="0 0 0" width="1" height="1"></a-plane>
       </a-entity>
+
+
+      <!-- PDFs -->
+      <a-entity mindar-image-target="targetIndex: 3" id="markerPDF">
+        <a-plane id="pdfTrigger" src="Assets/marker04.jpg" position="0 0 0" width="1" height="1.3" class="clickable">
+        </a-plane>
+      </a-entity>
+
     </a-scene>
+
 
     <script>
       document.getElementById("start-btn").addEventListener("click", () => {
@@ -168,6 +145,7 @@
       setupVideoEvents("marker2", "video2");
       setupVideoEvents("marker3", "video3");
       setupVideoEvents("marker7", "video7");
+      setupVideoEvents("marker9", "video9");
       setupVideoEvents("marker10", "video10");
       setupVideoEvents("marker12", "video12");
       setupVideoEvents("marker13", "video13");
@@ -175,103 +153,11 @@
     </script>
 
 
-
-
     <script>
-      /* --- Configuración de galerías: IDs de a-plane → lista de imágenes en a-assets --- */
-      const galleries = {
-        pdfPlane1: ["#t1p1", "#t1p2", "#t1p3"],
-        pdfPlane2: ["#t2p1", "#t2p2", "#t2p3", "#t2p4", "#t2p5", "#t2p6", "#t2p7", "#t2p8", "#t2p9", "#t2p10", "#t2p11", "#t2p12", "#t2p13", "#t2p14", "#t2p15", "#t2p16", "#t2p17", "#t2p18", "#t2p19", "#t2p20", "#t2p21", "#t2p22"]
-      };
-      const currentPages = { pdfPlane1: 0, pdfPlane2: 0 };
-
-      /* --- Utilidades para detectar si el marcador está visible --- */
-      function isMarkerVisible(el) {
-        const marker = el.closest('[mindar-image-target]');
-        return !!(marker && marker.object3D && marker.object3D.visible);
-      }
-
-      /* --- Setup: Raycaster + vectores de THREE --- */
-      const sceneEl = document.querySelector('a-scene');
-      const THREE = AFRAME.THREE;
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-
-      /* Recolecta los meshes asociados a los planos ".clickable" y guarda referencia al elemento */
-      let planeEls = Array.from(document.querySelectorAll('.clickable'));
-      let clickableMeshes = [];
-
-      /* Reconstruye la lista de meshes (hay que hacerlo cuando la escena / assets están listos) */
-      function buildClickableMeshes() {
-        clickableMeshes = [];
-        planeEls.forEach(el => {
-          el.object3D.traverse(node => {
-            if (node.isMesh) {
-              // enlazamos el mesh al elemento A-Frame para recuperarlo después
-              node._aframeEl = el;
-              clickableMeshes.push(node);
-            }
-          });
+        // Al hacer click en la imagen se abre el PDF
+        document.getElementById("pdfTrigger").addEventListener("click", () => {
+          window.open("Assets/marker04.pdf", "_blank");
         });
-        console.log('✅ Clickable meshes:', clickableMeshes.length);
-      }
-
-      /* Espera a que la escena cargue (para asegurar camera y object3D) */
-      sceneEl.addEventListener('loaded', () => {
-        planeEls = Array.from(document.querySelectorAll('.clickable'));
-        buildClickableMeshes();
-      });
-
-      /* Si añades assets dinámicamente, vuelve a llamar a buildClickableMeshes() */
-
-      /* --- Raycast desde coordenadas de pantalla → devuelve el elemento A-Frame intersectado (o null) --- */
-      function getIntersectedEl(clientX, clientY) {
-        if (!sceneEl.camera) return null;
-        mouse.x = (clientX / window.innerWidth) * 2 - 1;
-        mouse.y = - (clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouse, sceneEl.camera);
-
-        const intersects = raycaster.intersectObjects(clickableMeshes, true);
-        if (intersects.length === 0) return null;
-
-        // primer intersect
-        const mesh = intersects[0].object;
-        const el = mesh._aframeEl || mesh.el || null;
-        return el;
-      }
-
-      /* --- Avanza la página correspondiente si el marcador está visible --- */
-      function advancePageForEl(el) {
-        if (!el || !el.id) return;
-        const id = el.id;
-        if (!galleries[id]) return;
-        if (!isMarkerVisible(el)) {
-          console.log('✖ Marcador no visible, no se avanza:', id);
-          return;
-        }
-        const next = (currentPages[id] + 1) % galleries[id].length;
-        // usar material.src para forzar actualización de textura
-        el.setAttribute('material', 'src', galleries[id][next]);
-        currentPages[id] = next;
-        console.log(`📄 ${id} → página ${next + 1}`);
-      }
-
-      /* --- Handler unificado para touch/mouse/pointer --- */
-      function pointerDownHandler(evt) {
-        const x = evt.touches ? evt.touches[0].clientX : evt.clientX;
-        const y = evt.touches ? evt.touches[0].clientY : evt.clientY;
-        const el = getIntersectedEl(x, y);
-        if (el) advancePageForEl(el);
-      }
-
-      /* Registra listeners (touch y mouse) */
-      window.addEventListener('touchstart', pointerDownHandler, { passive: true });
-      window.addEventListener('mousedown', pointerDownHandler);
-
-      /* Debug: puedes descomentar para forzar rebuild manual en consola */
-      window.__rebuildClickableMeshes = buildClickableMeshes;
     </script>
-
-
   </body>
 </html>
