@@ -134,77 +134,76 @@
 
 
   <script>
-    /* --- CONTROL CENTRALIZADO DE AUDIO / VIDEO POR MARCADOR --- */
+    /* --- CONTROL DE AUDIO / VIDEO POR MARCADOR --- */
 
-    /* Bandera global: true si el usuario permitió sonido */
+    // Bandera global: true si el usuario activó sonido
     let soundEnabled = false;
 
-    /* Helper: mutear y pausar todos los videos excepto uno (si se entrega) */
-    function muteAndPauseAllExcept(exceptVideo) {
-      document.querySelectorAll('video').forEach(v => {
+    // Botón de sonido: solo activa bandera
+    document.getElementById("unmute-overlay").addEventListener("click", () => {
+      soundEnabled = true;
+      document.getElementById("unmute-overlay").style.display = "none";
+      console.log("🔊 Sonido activado por el usuario");
+    });
+
+    // Helper: mutear, ocultar y reiniciar todos los vídeos excepto uno
+    function muteAndHideAllExcept(exceptVideo) {
+      document.querySelectorAll("video").forEach(v => {
         if (exceptVideo && v === exceptVideo) return;
         try {
           v.muted = true;
-          if (!v.paused) v.pause();
-        } catch (e) { console.warn('mute/pause error', e); }
+          v.currentTime = 0;
+          v.style.display = "none";
+        } catch (e) {
+          console.warn("mute/hide error", e);
+        }
       });
     }
 
-    /* Handler del botón "Activar sonido": NO desmutea todos,
-       solo activa la bandera y desmutea los videos que ya estén reproduciéndose */
-    document.getElementById("unmute-overlay").addEventListener("click", () => {
-      soundEnabled = true;
-      // desmutear solo los videos que ya están reproduciéndose (evita sonidos masivos)
-      document.querySelectorAll('video').forEach(v => {
-        if (!v.paused) { try { v.muted = false; } catch (e) { console.warn(e); } }
-      });
-      // ocultar el overlay
-      document.getElementById("unmute-overlay").style.display = "none";
-      console.log("🔊 Sonido ACTIVADO por el usuario (solo videos activos serán desmuteados)");
-    });
-
-    /* Setup: registrar eventos por marcador */
+    // Configurar eventos para cada par marker/video
     const setupVideoEvents = (markerId, videoId) => {
       const video = document.getElementById(videoId);
       const marker = document.getElementById(markerId);
 
       if (!video || !marker) {
-        console.warn(`setupVideoEvents: elemento no encontrado ${markerId} / ${videoId}`);
+        console.warn(`⚠️ No se encontró marker/video: ${markerId} / ${videoId}`);
         return;
       }
 
-      // Aseguramos estado inicial: videos siempre comienzan muted (atributo HTML ya lo hace)
-      try { video.muted = true; } catch (e) { }
+      // Estado inicial: siempre oculto y muteado
+      video.muted = true;
+      video.style.display = "none";
 
       marker.addEventListener("targetFound", () => {
         console.log(`▶ targetFound -> ${markerId} ➜ ${videoId}`);
-        // Evitamos que otros videos suenen al mismo tiempo: muteo y pauso los demás
-        muteAndPauseAllExcept(video);
 
-        // Si el usuario ya activó sonido, desmuteo solo este video
+        // Ocultar y mutear todos los demás
+        muteAndHideAllExcept(video);
+
+        // Mostrar este
+        video.style.display = "block";
+
         if (soundEnabled) {
-          try { video.muted = false; } catch (e) { }
+          video.muted = false;
         }
 
-        // Reproducir (si estaba pausado por alguna razón)
         video.play().catch(err => {
-          console.log(`⚠️ Error play ${videoId}:`, err);
+          console.log(`⚠️ Error al reproducir ${videoId}:`, err);
         });
       });
 
       marker.addEventListener("targetLost", () => {
         console.log(`⏸ targetLost -> ${markerId} ➜ ${videoId}`);
-        // Pausar y volver a mutear para evitar que siga sonando en background
-        try {
-          video.pause();
-          video.muted = true;
-        } catch (e) { console.warn(e); }
+
+        video.muted = true;
+        video.currentTime = 0;
+        video.style.display = "none";
+        // ⚠️ NO usar video.pause() en Android, congela textura
       });
     };
 
-    /* Registrar todos los marcadores al DOMContentLoaded */
+    // Registrar todos los marcadores al cargar DOM
     document.addEventListener("DOMContentLoaded", () => {
-      // Llama setupVideoEvents para cada par marker/video (ajusta si tienes IDs distintos)
       setupVideoEvents("marker1", "video1");
       setupVideoEvents("marker2", "video2");
       setupVideoEvents("marker3", "video3");
@@ -216,13 +215,18 @@
       setupVideoEvents("marker15", "video15");
       setupVideoEvents("marker16", "video16");
 
-      // Debug: mostrar qué marcadores disparan events
-      document.querySelectorAll('a-entity[mindar-image-target]').forEach(el => {
-        el.addEventListener('targetFound', () => console.log('DEBUG: FOUND', el.id, el.getAttribute('mindar-image-target')));
-        el.addEventListener('targetLost', () => console.log('DEBUG: LOST', el.id));
+      // Debug extra: log de markers detectados
+      document.querySelectorAll("a-entity[mindar-image-target]").forEach(el => {
+        el.addEventListener("targetFound", () =>
+          console.log("DEBUG: FOUND", el.id, el.getAttribute("mindar-image-target"))
+        );
+        el.addEventListener("targetLost", () =>
+          console.log("DEBUG: LOST", el.id)
+        );
       });
     });
   </script>
+
 
 
 
