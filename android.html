@@ -115,26 +115,22 @@
 
 
   <script>
-    document.getElementById("start-btn").addEventListener("click", () => {
-      // Ocultar la pantalla de inicio
-      document.getElementById("start-screen").style.display = "none";
-
-      // Obtener los videos y forzar la reproducción
-      const videos = document.querySelectorAll("video");
-      videos.forEach(video => {
-        video.muted = false; // Desactivar muteo
-        video.play().catch(error => console.log("⚠️ No se pudo reproducir un video:", error));
-      });
-    });
-
-    // Reproducción basada en detección de marcador
+    // --- Control de videos basado en detección de marcadores ---
     const setupVideoEvents = (markerId, videoId) => {
       const video = document.getElementById(videoId);
       const marker = document.getElementById(markerId);
 
+      if (!video || !marker) {
+        console.warn(`⚠️ No se encontró video o marcador: ${markerId} / ${videoId}`);
+        return;
+      }
+
       marker.addEventListener("targetFound", () => {
         console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
-        video.play().catch(error => console.log(`⚠️ Error al reproducir ${videoId}:`, error));
+        // Intentar reproducir
+        video.play().catch(error =>
+          console.log(`⚠️ Error al reproducir ${videoId}:`, error)
+        );
       });
 
       marker.addEventListener("targetLost", () => {
@@ -143,17 +139,19 @@
       });
     };
 
-    // Asignar eventos a cada marcador
-    setupVideoEvents("marker1", "video1");
-    setupVideoEvents("marker2", "video2");
-    setupVideoEvents("marker3", "video3");
-    setupVideoEvents("marker7", "video7");
-    setupVideoEvents("marker9", "video9");
-    setupVideoEvents("marker10", "video10");
-    setupVideoEvents("marker12", "video12");
-    setupVideoEvents("marker13", "video13");
-    setupVideoEvents("marker15", "video15");
-    setupVideoEvents("marker16", "video16");
+    // --- Vincular todos los videos con sus marcadores ---
+    document.addEventListener("DOMContentLoaded", () => {
+      setupVideoEvents("marker1", "video1");
+      setupVideoEvents("marker2", "video2");
+      setupVideoEvents("marker3", "video3");
+      setupVideoEvents("marker7", "video7");
+      setupVideoEvents("marker9", "video9");
+      setupVideoEvents("marker10", "video10");
+      setupVideoEvents("marker12", "video12");
+      setupVideoEvents("marker13", "video13");
+      setupVideoEvents("marker15", "video15");
+      setupVideoEvents("marker16", "video16");
+    });
   </script>
 
 
