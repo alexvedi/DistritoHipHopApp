@@ -29,6 +29,10 @@
       <button id="start-btn">Seguir con iPhone</button>
       <a href="android.html"><button class="android">Seguir con Android</button></a>
     </section>
+
+    <div id="pdf-overlay">
+      <button id="pdf-open-btn">Abrir documento</button>
+    </div>
     
     <a-scene
       mindar-image="imageTargetSrc: Assets/targets-3.mind"
@@ -38,10 +42,12 @@
       device-orientation-permission-ui="enabled: false"
       >
       <!-- Cursor para permitir interacciones en móvil -->
-      <a-entity cursor="rayOrigin: mouse"></a-entity>
+      <a-entity cursor="rayOrigin: mouse" raycaster="objects: .clickable"></a-entity>
 
       <!-- Cámara AR -->
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="rayOrigin: mouse"
+        raycaster="objects: .clickable; interval: 100; far: 20">
+      </a-camera>
     
       <!-- Cargar assets (videos) -->
       <a-assets>
@@ -97,7 +103,7 @@
 
 
       <!-- PDFs -->
-      <a-entity mindar-image-target="targetIndex: 3" id="markerPDF">
+      <a-entity mindar-image-target="targetIndex: 3" id="markerPDF1">
         <a-plane id="pdfTrigger1" src="Assets/marker04.jpg" position="0 0 0" width="1" height="1.3" class="clickable">
         </a-plane>
       </a-entity>
@@ -148,18 +154,35 @@
 
 
     <script>
-        // Eventos de click para abrir los PDFs
-          document.getElementById("pdfTrigger1").addEventListener("click", () => {
-            window.open("Assets/marker04.pdf", "_blank");
-          });
+      // Función robusta para abrir en nueva pestaña con fallback en iOS
+      function openPDF(url) {
+        // 1) Intento directo
+        const win = window.open(url, "_blank", "noopener,noreferrer");
 
-          document.getElementById("pdfTrigger2").addEventListener("click", () => {
-            window.open("Assets/documento2.pdf", "_blank");
-          });
+        // 2) Si el popup fue bloqueado (iOS/Safari suele devolver null), activamos overlay
+        if (!win) {
+          const overlay = document.getElementById("pdf-overlay");
+          const btn = document.getElementById("pdf-open-btn");
 
-          document.getElementById("pdfTrigger3").addEventListener("click", () => {
-            window.open("Assets/documento3.pdf", "_blank");
-          });
+          // Aseguramos que cada click abra el URL correcto
+          btn.onclick = () => {
+            // Este gesto en un botón HTML sí se considera "user gesture" válido
+            window.open(url, "_blank", "noopener,noreferrer");
+            overlay.style.display = "none";
+          };
+
+          overlay.style.display = "block";
+        }
+      }
+
+      // Enlazamos los tres triggers a sus PDFs
+      const T1 = document.getElementById("pdfTrigger1");
+      const T2 = document.getElementById("pdfTrigger2");
+      const T3 = document.getElementById("pdfTrigger3");
+
+      if (T1) T1.addEventListener("click", () => openPDF("Assets/marker04.pdf"));
+      if (T2) T2.addEventListener("click", () => openPDF("Assets/documento2.pdf"));
+      if (T3) T3.addEventListener("click", () => openPDF("Assets/documento3.pdf"));
     </script>
   </body>
 </html>
