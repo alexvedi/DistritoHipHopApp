@@ -114,7 +114,7 @@
   </a-scene>
 
 
-  <!-- Botón HTML para activar sonido -->
+  <!-- Botón para activar sonido -->
   <div id="unmute-overlay" style="
     position: fixed;
     bottom: 10%;
@@ -125,7 +125,6 @@
     color: #fff;
     padding: 12px 20px;
     border-radius: 8px;
-    display: block;
     font-size: 16px;
     cursor: pointer;
   ">
@@ -133,32 +132,38 @@
   </div>
 
 
+
   <script>
-    // --- Control de videos basado en detección de marcadores ---
+    let soundEnabled = false; // bandera global
+
+    // Botón para activar sonido (solo cambia la bandera)
+    document.getElementById("unmute-overlay").addEventListener("click", () => {
+      soundEnabled = true;
+      document.getElementById("unmute-overlay").style.display = "none";
+      console.log("🔊 Sonido activado por el usuario");
+    });
+
+    // Reproducción basada en detección de marcador
     const setupVideoEvents = (markerId, videoId) => {
       const video = document.getElementById(videoId);
       const marker = document.getElementById(markerId);
 
-      if (!video || !marker) {
-        console.warn(`⚠️ No se encontró video o marcador: ${markerId} / ${videoId}`);
-        return;
-      }
+      if (!video || !marker) return;
 
       marker.addEventListener("targetFound", () => {
-        console.log(`🔹 Marcador ${markerId} detectado, reproduciendo ${videoId}...`);
-        // Intentar reproducir
-        video.play().catch(error =>
-          console.log(`⚠️ Error al reproducir ${videoId}:`, error)
-        );
+        console.log(`▶️ Marcador ${markerId} detectado, reproduciendo ${videoId}`);
+        if (soundEnabled) video.muted = false;
+        video.play().catch(err => console.log(`⚠️ Error al reproducir ${videoId}:`, err));
       });
 
       marker.addEventListener("targetLost", () => {
-        console.log(`🔹 Marcador ${markerId} perdido, pausando ${videoId}...`);
+        console.log(`⏸️ Marcador ${markerId} perdido, pausando ${videoId}`);
         video.pause();
+        video.muted = true; // volver a mutear cuando se pierde
       });
     };
 
-    // --- Vincular todos los videos con sus marcadores ---
+    // Asignar eventos a cada marcador
     document.addEventListener("DOMContentLoaded", () => {
       setupVideoEvents("marker1", "video1");
       setupVideoEvents("marker2", "video2");
