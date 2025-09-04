@@ -133,13 +133,14 @@
 
 
 
+  
   <script>
     /* --- CONTROL DE AUDIO / VIDEO POR MARCADOR --- */
 
     // Bandera global: true si el usuario activó sonido
     let soundEnabled = false;
 
-    // Botón de sonido: solo activa bandera
+    // Botón de sonido: solo activa la bandera
     document.getElementById("unmute-overlay").addEventListener("click", () => {
       soundEnabled = true;
       document.getElementById("unmute-overlay").style.display = "none";
@@ -149,7 +150,10 @@
     // Helper: mutear, ocultar y reiniciar todos los vídeos excepto uno
     function muteAndHideAllExcept(exceptVideo) {
       document.querySelectorAll("video").forEach(v => {
+        // Ignorar el vídeo de la cámara de MindAR
+        if (v.classList.contains("mindar-video")) return;
         if (exceptVideo && v === exceptVideo) return;
+
         try {
           v.muted = true;
           v.currentTime = 0;
@@ -160,7 +164,7 @@
       });
     }
 
-    // Configurar eventos para cada par marker/video
+    // Configurar eventos para cada par marcador/vídeo
     const setupVideoEvents = (markerId, videoId) => {
       const video = document.getElementById(videoId);
       const marker = document.getElementById(markerId);
@@ -198,7 +202,7 @@
         video.muted = true;
         video.currentTime = 0;
         video.style.display = "none";
-        // ⚠️ NO usar video.pause() en Android, congela textura
+        // ⚠️ No usamos video.pause() en Android para evitar congelar la textura
       });
     };
 
