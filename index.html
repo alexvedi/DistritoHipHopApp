@@ -29,6 +29,15 @@
       <button id="start-btn">Seguir con iPhone</button>
       <a href="android.html"><button class="android">Seguir con Android</button></a>
     </section>
+
+
+    <div id="pdf-buttons" style="position:fixed; bottom:6%; left:50%; transform:translateX(-50%);
+         z-index:9999; display:none;">
+      <button id="btnHTML1" class="pdf-btn">Abrir PDF 1</button>
+      <button id="btnHTML2" class="pdf-btn">Abrir PDF 2</button>
+      <button id="btnHTML3" class="pdf-btn">Abrir PDF 3</button>
+    </div>
+
     
     <a-scene
       mindar-image="imageTargetSrc: Assets/targets-3.mind"
@@ -47,7 +56,6 @@
     
       <!-- Cargar assets (videos) -->
       <a-assets>
-
         <video id="video1" src="Assets/marker01-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video2" src="Assets/marker02-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video3" src="Assets/marker03-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
@@ -57,9 +65,6 @@
         <video id="video12" src="Assets/marker12-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video13" src="Assets/marker13-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
         <video id="video15" src="Assets/marker15-asset.mp4" loop muted playsinline webkit-playsinline autoplay crossorigin="anonymous" preload="auto"></video>
-        
-        <img id="pdfBtnImg" src="Assets/pdf-button.png">
-
       </a-assets>
 
       <!-- Configuración de múltiples marcadores -->
@@ -100,21 +105,10 @@
       </a-entity>
 
 
-      <!-- Marcador 4 con botón PDF -->
-      <a-entity mindar-image-target="targetIndex: 3" id="markerPDF1">
-        <a-plane id="btnPDF1" src="#pdfBtnImg" position="0 -0.8 0" width="0.6" height="0.3" visible="false"></a-plane>
-      </a-entity>
-      
-      <!-- Marcador 5 con botón PDF -->
-      <a-entity mindar-image-target="targetIndex: 4" id="markerPDF2">
-        <a-plane id="btnPDF2" src="#pdfBtnImg" position="0 -0.8 0" width="0.6" height="0.3" visible="false"></a-plane>
-      </a-entity>
-      
-      <!-- Marcador 6 con botón PDF -->
-      <a-entity mindar-image-target="targetIndex: 5" id="markerPDF3">
-        <a-plane id="btnPDF3" src="#pdfBtnImg" position="0 -0.8 0" width="0.6" height="0.3" visible="false"></a-plane>
-      </a-entity>
-      
+      <!-- PDFs -->
+      <a-entity mindar-image-target="targetIndex: 3" id="markerPDF1"></a-entity>
+      <a-entity mindar-image-target="targetIndex: 4" id="markerPDF2"></a-entity>
+      <a-entity mindar-image-target="targetIndex: 5" id="markerPDF3"></a-entity>
 
     </a-scene>
 
@@ -161,31 +155,30 @@
     </script>
 
 
-
     <script>
-      // Configuración de botones PDF
-      const setupPDFButton = (markerId, btnId, pdfUrl) => {
+      const btnsContainer = document.getElementById("pdf-buttons");
+
+      // Asocia cada marcador a un botón HTML
+      const setupHTMLBtn = (markerId, btnId, pdfUrl) => {
         const marker = document.getElementById(markerId);
         const btn = document.getElementById(btnId);
 
         marker.addEventListener("targetFound", () => {
-          btn.setAttribute("visible", true);
+          console.log(`Marcador ${markerId} detectado`);
+          btnsContainer.style.display = "block";
+          btn.onclick = () => window.open(pdfUrl, "_blank");
         });
 
         marker.addEventListener("targetLost", () => {
-          btn.setAttribute("visible", false);
-        });
-
-        btn.addEventListener("click", () => {
-          window.open(pdfUrl, "_blank");
+          console.log(`Marcador ${markerId} perdido`);
+          btnsContainer.style.display = "none";
+          btn.onclick = null;
         });
       };
 
-      // Tres PDFs con tres marcadores
-      setupPDFButton("markerPDF1", "btnPDF1", "Assets/marker04.pdf");
-      setupPDFButton("markerPDF2", "btnPDF2", "Assets/marker05.pdf");
-      setupPDFButton("markerPDF3", "btnPDF3", "Assets/marker06.pdf");
+      setupHTMLBtn("markerPDF1", "btnHTML1", "Assets/pdf1.pdf");
+      setupHTMLBtn("markerPDF2", "btnHTML2", "Assets/pdf2.pdf");
+      setupHTMLBtn("markerPDF3", "btnHTML3", "Assets/pdf3.pdf");
     </script>
-
   </body>
 </html>
