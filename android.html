@@ -114,6 +114,25 @@
   </a-scene>
 
 
+  <!-- Botón HTML para activar sonido -->
+  <div id="unmute-overlay" style="
+    position: fixed;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    display: block;
+    font-size: 16px;
+    cursor: pointer;
+  ">
+    🔊 Activar sonido
+  </div>
+
+
   <script>
     // --- Control de videos basado en detección de marcadores ---
     const setupVideoEvents = (markerId, videoId) => {
@@ -239,5 +258,22 @@
       }
     });
   </script>
+
+
+  <script>
+    document.getElementById("unmute-overlay").addEventListener("click", () => {
+      const videos = document.querySelectorAll("video");
+
+      videos.forEach(video => {
+        video.muted = false; // activar sonido
+        video.play().catch(err => console.log("⚠️ Error al reanudar:", err));
+      });
+
+      // ocultar el botón después de activarlo
+      document.getElementById("unmute-overlay").style.display = "none";
+    });
+  </script>
+
+
 </body>
 </html>
