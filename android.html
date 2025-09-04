@@ -135,101 +135,91 @@
 
   
   <script>
-    /* --- CONTROL DE AUDIO / VIDEO POR MARCADOR --- */
+  // Bandera global: true si el usuario activó sonido
+  let soundEnabled = false;
 
-    // Bandera global: true si el usuario activó sonido
-    let soundEnabled = false;
+  // Guardamos referencia al video actualmente activo
+  let activeVideo = null;
 
-    // Botón de sonido: solo activa la bandera
-    document.getElementById("unmute-overlay").addEventListener("click", () => {
-      soundEnabled = true;
-      document.getElementById("unmute-overlay").style.display = "none";
-      console.log("🔊 Sonido activado por el usuario");
+  // Botón de sonido
+  document.getElementById("unmute-overlay").addEventListener("click", () => {
+    soundEnabled = true;
+    document.getElementById("unmute-overlay").style.display = "none";
+    console.log("🔊 Sonido activado por el usuario");
+
+    // Si ya hay un video activo, desmutearlo
+    if (activeVideo) {
+      activeVideo.muted = false;
+    }
+  });
+
+  // Helper: mutear y reiniciar todos menos uno
+  function muteAllExcept(exceptVideo) {
+    document.querySelectorAll("video").forEach(v => {
+      if (v.classList.contains("mindar-video")) return; // ignorar cámara
+      if (exceptVideo && v === exceptVideo) return;
+
+      try {
+        v.muted = true;
+        v.currentTime = 0;
+      } catch (e) {
+        console.warn("mute error", e);
+      }
     });
+  }
 
-    // Helper: mutear, ocultar y reiniciar todos los vídeos excepto uno
-    function muteAndHideAllExcept(exceptVideo) {
-      document.querySelectorAll("video").forEach(v => {
-        // Ignorar el vídeo de la cámara de MindAR
-        if (v.classList.contains("mindar-video")) return;
-        if (exceptVideo && v === exceptVideo) return;
+  // Configurar eventos para cada marcador
+  const setupVideoEvents = (markerId, videoId) => {
+    const video = document.getElementById(videoId);
+    const marker = document.getElementById(markerId);
 
-        try {
-          v.muted = true;
-          v.currentTime = 0;
-          v.style.display = "none";
-        } catch (e) {
-          console.warn("mute/hide error", e);
-        }
-      });
+    if (!video || !marker) {
+      console.warn(`⚠️ No se encontró marker/video: ${markerId} / ${videoId}`);
+      return;
     }
 
-    // Configurar eventos para cada par marcador/vídeo
-    const setupVideoEvents = (markerId, videoId) => {
-      const video = document.getElementById(videoId);
-      const marker = document.getElementById(markerId);
+    // Estado inicial
+    video.muted = true;
 
-      if (!video || !marker) {
-        console.warn(`⚠️ No se encontró marker/video: ${markerId} / ${videoId}`);
-        return;
+    marker.addEventListener("targetFound", () => {
+      console.log(`▶ targetFound -> ${markerId} ➜ ${videoId}`);
+
+      muteAllExcept(video);
+      activeVideo = video;
+
+      if (soundEnabled) {
+        video.muted = false;
       }
 
-      // Estado inicial: siempre oculto y muteado
-      video.muted = true;
-      video.style.display = "none";
-
-      marker.addEventListener("targetFound", () => {
-        console.log(`▶ targetFound -> ${markerId} ➜ ${videoId}`);
-
-        // Ocultar y mutear todos los demás
-        muteAndHideAllExcept(video);
-
-        // Mostrar este
-        video.style.display = "block";
-
-        if (soundEnabled) {
-          video.muted = false;
-        }
-
-        video.play().catch(err => {
-          console.log(`⚠️ Error al reproducir ${videoId}:`, err);
-        });
-      });
-
-      marker.addEventListener("targetLost", () => {
-        console.log(`⏸ targetLost -> ${markerId} ➜ ${videoId}`);
-
-        video.muted = true;
-        video.currentTime = 0;
-        video.style.display = "none";
-        // ⚠️ No usamos video.pause() en Android para evitar congelar la textura
-      });
-    };
-
-    // Registrar todos los marcadores al cargar DOM
-    document.addEventListener("DOMContentLoaded", () => {
-      setupVideoEvents("marker1", "video1");
-      setupVideoEvents("marker2", "video2");
-      setupVideoEvents("marker3", "video3");
-      setupVideoEvents("marker7", "video7");
-      setupVideoEvents("marker9", "video9");
-      setupVideoEvents("marker10", "video10");
-      setupVideoEvents("marker12", "video12");
-      setupVideoEvents("marker13", "video13");
-      setupVideoEvents("marker15", "video15");
-      setupVideoEvents("marker16", "video16");
-
-      // Debug extra: log de markers detectados
-      document.querySelectorAll("a-entity[mindar-image-target]").forEach(el => {
-        el.addEventListener("targetFound", () =>
-          console.log("DEBUG: FOUND", el.id, el.getAttribute("mindar-image-target"))
-        );
-        el.addEventListener("targetLost", () =>
-          console.log("DEBUG: LOST", el.id)
-        );
+      video.play().catch(err => {
+        console.log(`⚠️ Error al reproducir ${videoId}:`, err);
       });
     });
-  </script>
+
+    marker.addEventListener("targetLost", () => {
+      console.log(`⏸ targetLost -> ${markerId} ➜ ${videoId}`);
+      video.muted = true;
+      video.currentTime = 0;
+      activeVideo = null;
+      // No usamos pause() para evitar congelar la textura en Android
+    });
+  };
+
+  // Registrar todos los marcadores al cargar
+  document.addEventListener("DOMContentLoaded", () => {
+    setupVideoEvents("marker1", "video1");
+    setupVideoEvents("marker2", "video2");
+    setupVideoEvents("marker3", "video3");
+    setupVideoEvents("marker7", "video7");
+    setupVideoEvents("marker9", "video9");
+    setupVideoEvents("marker10", "video10");
+    setupVideoEvents("marker12", "video12");
+    setupVideoEvents("marker13", "video13");
+    setupVideoEvents("marker15", "video15");
+    setupVideoEvents("marker16", "video16");
+  });
+</script>
+
 
 
 
