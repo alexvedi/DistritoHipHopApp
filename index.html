@@ -161,82 +161,91 @@
     </script>
 
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // Ajusta estos mapeos a los IDs reales de tus a-entity marcadores
-        const mappings = [
-          { markerId: 'marker10', overlayId: 'pdfOverlay1', btnId: 'pdfBtn1', debugName: 'PDF 1' },
-          { markerId: 'marker12', overlayId: 'pdfOverlay2', btnId: 'pdfBtn2', debugName: 'PDF 2' },
-          { markerId: 'marker15', overlayId: 'pdfOverlay3', btnId: 'pdfBtn3', debugName: 'PDF 3' }
-        ];
 
-        // Oculta todos los overlays (aseguro estado inicial)
-        const overlays = Array.from(document.querySelectorAll('.pdf-overlay'));
-        overlays.forEach(o => o.style.display = 'none');
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
 
-        // Helper: ocultar todos (para mostrar sólo uno)
-        function hideAllOverlays() {
-          overlays.forEach(o => o.style.display = 'none');
+    // ----- Ajusta aquí si tus overlays o rutas son distintas -----
+    const mappings = [
+      { markerId: 'markerPDF1', overlayId: 'pdfOverlay1', btnId: 'pdfBtn1', pdf: 'Assets/marker04.pdf', name: 'PDF 1' },
+      { markerId: 'markerPDF2', overlayId: 'pdfOverlay2', btnId: 'pdfBtn2', pdf: 'Assets/marker05.pdf', name: 'PDF 2' },
+      { markerId: 'markerPDF3', overlayId: 'pdfOverlay3', btnId: 'pdfBtn3', pdf: 'Assets/marker06.pdf', name: 'PDF 3' }
+    ];
+    // -------------------------------------------------------------
+
+    // Aseguro estado inicial: ocultar overlays desde JS (por si CSS los deja visibles)
+    const overlays = Array.from(document.querySelectorAll('.pdf-overlay'));
+    overlays.forEach(o => { o.style.display = 'none'; });
+
+    // Helper: ocultar todos los overlays (cuando uno se activa)
+    function hideAllOverlays() {
+      overlays.forEach(o => o.style.display = 'none');
+    }
+
+    // Esperar a que la escena esté lista
+    const aScene = document.querySelector('a-scene');
+    const attachHandlers = () => {
+
+      mappings.forEach(m => {
+        const markerEl = document.getElementById(m.markerId);
+        const overlayEl = document.getElementById(m.overlayId);
+        const btnEl = document.getElementById(m.btnId);
+
+        if (!markerEl) {
+          console.warn(`[AR] marker no encontrado: '${m.markerId}'. Revisa el id del <a-entity>.`);
+          return;
+        }
+        if (!overlayEl || !btnEl) {
+          console.warn(`[AR] overlay/button no encontrado para: ${m.name} (overlay:${m.overlayId}, btn:${m.btnId})`);
+          return;
         }
 
-        // Adjuntar listeners cuando la escena AR esté lista
-        const aScene = document.querySelector('a-scene');
-        const attachHandlers = () => {
-          mappings.forEach(m => {
-            const markerEl = document.getElementById(m.markerId);
-            const overlayEl = document.getElementById(m.overlayId);
-            const btnEl = document.getElementById(m.btnId);
+        // Inicial: oculto
+        overlayEl.style.display = 'none';
 
-            if (!markerEl) {
-              console.warn(`[AR] marker no encontrado: '${m.markerId}'. Revisa el id del <a-entity>.`);
-              return;
-            }
-            if (!overlayEl || !btnEl) {
-              console.warn(`[AR] overlay/button no encontrado para: ${m.debugName} (overlay:${m.overlayId}, btn:${m.btnId})`);
-              return;
-            }
-
-            // Aseguro estado inicial
-            overlayEl.style.display = 'none';
-
-            const pdfUrl = overlayEl.dataset.pdf;
-            if (!pdfUrl) {
-              console.warn(`[AR] data-pdf no definido en ${m.overlayId}`);
-            }
-
-            // Listener nativo del botón (siempre atado desde inicio)
-            const openPdf = (ev) => {
-              // Evitamos que el mismo click haga cosas raras
-              ev && ev.preventDefault && ev.preventDefault();
-              // Esta llamada se hace desde el handler del botón: gesto de usuario
-              window.open(pdfUrl, '_blank', 'noopener');
-            };
-            btnEl.addEventListener('click', openPdf);
-            btnEl.addEventListener('touchend', (ev) => { ev.preventDefault(); openPdf(ev); }, { passive: false });
-
-            // Eventos MindAR: sólo mostrar el overlay correspondiente
-            markerEl.addEventListener('targetFound', () => {
-              console.log(`[AR] marker encontrado: ${m.markerId} → mostrando ${m.overlayId}`);
-              hideAllOverlays();            // oculto los demás
-              overlayEl.style.display = 'block';
-            });
-
-            markerEl.addEventListener('targetLost', () => {
-              console.log(`[AR] marker perdido: ${m.markerId} → ocultando ${m.overlayId}`);
-              overlayEl.style.display = 'none';
-            });
-          });
+        // Handler seguro: llamada al PDF desde un gesto nativo (click / touchend)
+        const openPdf = (ev) => {
+          if (ev && ev.preventDefault) ev.preventDefault();
+          // abre en nueva pestaña - si m.pdf es relativo, asegúrate que existe en Assets/
+          window.open(m.pdf, '_blank', 'noopener');
         };
 
-        if (aScene) {
-          if (aScene.hasLoaded) attachHandlers();
-          else aScene.addEventListener('loaded', attachHandlers);
-        } else {
-          // fallback: si no hay <a-scene> (por algún motivo), intento attach pasado un tick
-          setTimeout(attachHandlers, 600);
-        }
+        // Evitar registrar múltiples veces
+        btnEl.removeEventListener('click', openPdf);
+        btnEl.addEventListener('click', openPdf);
+        btnEl.removeEventListener('touchend', openPdf);
+        btnEl.addEventListener('touchend', (e) => { e.preventDefault(); openPdf(e); }, { passive: false });
+
+        // Eventos MindAR: mostrar solo el overlay correspondiente
+        markerEl.addEventListener('targetFound', () => {
+          console.log(`[AR] targetFound -> ${m.markerId} (${m.name})`);
+          hideAllOverlays();
+          overlayEl.style.display = 'block';
+        });
+
+        markerEl.addEventListener('targetLost', () => {
+          console.log(`[AR] targetLost -> ${m.markerId} (${m.name})`);
+          overlayEl.style.display = 'none';
+        });
       });
-    </script>
+
+      // Debug adicional: loguear todos los a-entity que contienen mindar-image-target
+      document.querySelectorAll('a-entity[mindar-image-target]').forEach(el => {
+        el.addEventListener('targetFound', () => console.log('DEBUG: FOUND', el.id, el.getAttribute('mindar-image-target')));
+        el.addEventListener('targetLost', () => console.log('DEBUG: LOST', el.id));
+      });
+    };
+
+    if (aScene) {
+      if (aScene.hasLoaded) attachHandlers();
+      else aScene.addEventListener('loaded', attachHandlers);
+    } else {
+      // fallback
+      setTimeout(attachHandlers, 700);
+    }
+  });
+</script>
+
 
   </body>
 </html>
