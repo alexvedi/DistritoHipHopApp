@@ -31,11 +31,17 @@
     </section>
 
 
-    <div id="pdf-buttons" style="position:fixed; bottom:6%; left:50%; transform:translateX(-50%);
-         z-index:9999; display:none;">
-      <button id="btnHTML1" class="pdf-btn">Abrir PDF 1</button>
-      <button id="btnHTML2" class="pdf-btn">Abrir PDF 2</button>
-      <button id="btnHTML3" class="pdf-btn">Abrir PDF 3</button>
+    <!-- Botones para PDFs -->
+    <div id="btnHTML1" class="pdf-overlay">
+      <button class="pdf-btn">Abrir PDF</button>
+    </div>
+    
+    <div id="btnHTML2" class="pdf-overlay">
+      <button class="pdf-btn">Abrir PDF</button>
+    </div>
+    
+    <div id="btnHTML3" class="pdf-overlay">
+      <button class="pdf-btn">Abrir PDF</button>
     </div>
 
     
@@ -156,29 +162,28 @@
 
 
     <script>
-      const btnsContainer = document.getElementById("pdf-buttons");
-
-      // Asocia cada marcador a un botón HTML
-      const setupHTMLBtn = (markerId, btnId, pdfUrl) => {
+      // Función para asignar marcador -> botón -> PDF
+      const setupHTMLBtn = (markerId, overlayId, pdfUrl) => {
         const marker = document.getElementById(markerId);
-        const btn = document.getElementById(btnId);
+        const overlay = document.getElementById(overlayId);
+        const button = overlay.querySelector("button");
 
         marker.addEventListener("targetFound", () => {
-          console.log(`Marcador ${markerId} detectado`);
-          btnsContainer.style.display = "block";
-          btn.onclick = () => window.open(pdfUrl, "_blank");
+          overlay.style.display = "block";   // Mostrar solo este botón
+          button.onclick = () => window.open(pdfUrl, "_blank");
         });
 
         marker.addEventListener("targetLost", () => {
-          console.log(`Marcador ${markerId} perdido`);
-          btnsContainer.style.display = "none";
-          btn.onclick = null;
+          overlay.style.display = "none";    // Ocultar el botón
+          button.onclick = null;
         });
       };
 
-      setupHTMLBtn("markerPDF1", "btnHTML1", "Assets/pdf1.pdf");
-      setupHTMLBtn("markerPDF2", "btnHTML2", "Assets/pdf2.pdf");
-      setupHTMLBtn("markerPDF3", "btnHTML3", "Assets/pdf3.pdf");
+      // Vinculaciones
+      setupHTMLBtn("markerPDF1", "btnHTML1", "Assets/marker04.pdf");
+      setupHTMLBtn("markerPDF2", "btnHTML2", "Assets/marker05.pdf");
+      setupHTMLBtn("markerPDF3", "btnHTML3", "Assets/marker06.pdf");
     </script>
+
   </body>
 </html>
