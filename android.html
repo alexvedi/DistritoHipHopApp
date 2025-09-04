@@ -265,20 +265,5 @@
   </script>
 
 
-  <script>
-    document.getElementById("unmute-overlay").addEventListener("click", () => {
-      const videos = document.querySelectorAll("video");
-
-      videos.forEach(video => {
-        video.muted = false; // activar sonido
-        video.play().catch(err => console.log("⚠️ Error al reanudar:", err));
-      });
-
-      // ocultar el botón después de activarlo
-      document.getElementById("unmute-overlay").style.display = "none";
-    });
-  </script>
-
-
 </body>
 </html>
