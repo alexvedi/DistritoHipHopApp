@@ -54,15 +54,24 @@ img {
 }
 
 
+.pdf-overlay {
+  position: fixed;
+  bottom: 6%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: none;
+  /* IMPORTANT: oculto por defecto */
+  pointer-events: auto;
+}
+
 .pdf-btn {
-  margin: 0 6px;
   font-size: 16px;
   padding: 10px 18px;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   color: #fff;
   border: none;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 canvas { touch-action: none; -webkit-user-select: none; user-select: none; }
